@@ -32,9 +32,7 @@ app.post('/api/aprendices', (req, res) => {
             datos: datosAprendiz
         });
     };
-    res.status(201).json({ mensaje: 'crear aprendiz', 
-                            datos: datosAprendiz,
-                             edad: edad});
+    res.status(201).json({ mensaje: 'crear aprendiz' });
 });
 
 app.put('/api/aprendices/:id', (req, res) => {
