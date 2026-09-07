@@ -11,7 +11,19 @@ const PUERTO = process.env.MIPUERTO || 3003;
 const sistemaArchivos = require("fs");
 const ruta = require("path");
 const rutaMiArchivo =ruta.join(__dirname, "datos.json");
-
+// importar multer
+const multer = require("multer");
+//almacenamiento
+const almacen=multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "misimagenes/");},
+        filename: (req, file, cb) => {
+            const extension = ruta.extname(file.originalname);
+            cb(null, `${Date.now()}${extension}`);}
+    });
+//configuracion de almacenamiento para que se suba en el post
+    const subir = multer({storage: almacen});
+  
 
 //app.get('/', (req, res) => {
     //res.send('API Rest Full con expres');});
@@ -25,8 +37,9 @@ app.get('/api/aprendices', (req, res) => {
 
 });
 
-app.post('/api/aprendices', (req, res) => {
+app.post('/api/aprendices', subir.single("imagen"), (req, res) => {
      const datosAprendiz = req.body;
+     datosAprendiz.imagen = req.file?`/misimagenes/${req.file.filename}` : "sin imagen";
      sistemaArchivos.readFile(rutaMiArchivo, "utf-8", (error, datos) => {
         if (error)  res.status(500).json({ error: 'no se puede leer el archivo' });
         const listaAprendices = JSON.parse(datos);
