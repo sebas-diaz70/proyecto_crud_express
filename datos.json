@@ -1,0 +1,38 @@
+[
+  {
+    "nombre": "Juan",
+    "edad": 18,
+    "corro": "",
+    "imagen": "url",
+    "clave": "x123"
+  },
+  {
+    "nombre": "sebastian",
+    "edad": 17,
+    "corro": "sebas@hfhrf",
+    "imagen": "url",
+    "clave": "x2423"
+  },
+  {
+    "nombre": "felipe",
+    "edad": 17,
+    "corro": "feli@hfhrf",
+    "imagen": "url",
+    "clave": "x24gdfh3"
+  },
+  {
+    "nombre": "maria",
+    "edad": 16,
+    "corro": "maria@hfhrf",
+    "imagen": "url",
+    "clave": "x244553"
+  },
+  
+  {
+    "nombre": "pepe",
+    "edad": "18",
+    "corro": "pepe@guagfo8w",
+    "imagen": "url",
+    "clave": "qeijhfb"
+  }
+]
