@@ -7,10 +7,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const PUERTO = process.env.MIPUERTO || 3003;
+
+//importar mis middlewares
+const registroMiddleware = require("./middleware/registroMiddleware.js");
+const manejadorErroresMiddleware = require("./middleware/manejadoErroresMiddleware.js");
+//usuar mis middlewares
+app.use(registroMiddleware);
+
+
 //librerias fs, path
 const sistemaArchivos = require("fs");
 const ruta = require("path");
 const rutaMiArchivo =ruta.join(__dirname, "datos.json");
+
+
 // importar multer
 const multer = require("multer");
 //almacenamiento
@@ -23,12 +33,13 @@ const almacen=multer.diskStorage({
     });
 //configuracion de almacenamiento para que se suba en el post
     const subir = multer({storage: almacen});
-  
+  //validaciones
+const { validar } = require("./validaciones/validaciones.js");
 
 //app.get('/', (req, res) => {
     //res.send('API Rest Full con expres');});
 
-app.get('/api/aprendices', (req, res) => {
+app.get('/api/aprendices/', (req, res) => {
    // res.status(200).json({ mensaje: 'Lista Aprendices' });
     sistemaArchivos.readFile(rutaMiArchivo, "utf-8", (error, datos) => {
         if (error)  res.status(500).json({ error: 'no se puede leer el archivo' });
@@ -37,7 +48,7 @@ app.get('/api/aprendices', (req, res) => {
 
 });
 
-app.post('/api/aprendices', subir.single("imagen"), (req, res) => {
+app.post('/api/aprendices/', subir.single("imagen"),validar, (req, res) => {
      const datosAprendiz = req.body;
      datosAprendiz.imagen = req.file?`/misimagenes/${req.file.filename}` : "sin imagen";
      sistemaArchivos.readFile(rutaMiArchivo, "utf-8", (error, datos) => {
@@ -62,6 +73,11 @@ app.delete('/api/aprendices/:id', (req, res) => {
     res.status(200).json({ mensaje: 'eliminar aprendiz' });
 });
 
+//probocando un error para probar el middleware de manejo de errores
+app.get('/api/error', (req, res, next) => {
+    next(new Error("Error de prueba"));
+})
+app.use(manejadorErroresMiddleware);
 app.listen(PUERTO, () => {
     console.log(`Servidor ejecutándose en http://localhost:${PUERTO}`);
 });

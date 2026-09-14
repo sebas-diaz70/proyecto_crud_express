@@ -2,64 +2,72 @@
   {
     "nombre": "Juan",
     "edad": 18,
-    "corro": "",
+    "correo": "",
     "imagen": "url",
     "clave": "x123"
   },
   {
     "nombre": "sebastian",
     "edad": 17,
-    "corro": "sebas@hfhrf",
+    "correo": "sebas@hfhrf",
     "imagen": "url",
     "clave": "x2423"
   },
   {
     "nombre": "felipe",
     "edad": 17,
-    "corro": "feli@hfhrf",
+    "correo": "feli@hfhrf",
     "imagen": "url",
     "clave": "x24gdfh3"
   },
   {
     "nombre": "maria",
     "edad": 16,
-    "corro": "maria@hfhrf",
+    "correo": "maria@hfhrf",
     "imagen": "url",
     "clave": "x244553"
   },
   {
     "nombre": "pepe",
     "edad": "18",
-    "corro": "pepe@guagfo8w",
+    "correo": "pepe@guagfo8w",
     "imagen": "url",
     "clave": "qeijhfb"
   },
   {
     "nombre": "cristian",
     "edad": "19",
-    "corro": "cristian@guagfo8w",
+    "correo": "cristian@guagfo8w",
     "imagen": "sin imagen",
     "clave": "qeijhfb"
   },
   {
     "nombre": "cristian",
     "edad": "19",
-    "corro": "cristian@guagfo8w",
+    "correo": "cristian@guagfo8w",
     "imagen": "sin imagen",
     "clave": "qeijhfb"
   },
   {
     "nombre": "liss",
     "edad": "14",
-    "corro": "ugfciz@guagfo8w",
+    "correo": "ugfciz@guagfo8w",
     "clave": "sjgh",
     "imagen": "/misimagenes/1788797845003.jpg"
   },
   {
     "nombre": "brayan",
     "edad": "19",
-    "corro": "brayan@jdilads",
+    "correo": "brayan@jdilads",
     "clave": "AWE ",
     "imagen": "/misimagenes/1788797917608.jpg"
+  },
+  {
+    "nombre": "ana",
+    "edad": "18",
+    "correo": "ana654@gmail.com",
+    "clave": "fghfaefwq",
+    "id": "01",
+    "imagen": "/misimagenes/1789398776061.jpg"
   }
 ]
