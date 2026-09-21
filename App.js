@@ -3,14 +3,16 @@ require('dotenv').config();
 
 const app = express();
 
+const JsonWebTokenError = require("jsonwebtoken");
 //middleware body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const PUERTO = process.env.MIPUERTO || 3003;
 
 //importar mis middlewares
-const registroMiddleware = require("./middleware/registroMiddleware.js");
-const manejadorErroresMiddleware = require("./middleware/manejadoErroresMiddleware.js");
+const registroMiddleware = require("./src/middleware/registroMiddleware.js");
+const manejadorErroresMiddleware = require("./src/middleware/manejadoErroresMiddleware.js");
+const autenticacionMiddleware = require("./src/middleware/autenticacionMiddleware.js")
 //usuar mis middlewares
 app.use(registroMiddleware);
 
@@ -34,7 +36,7 @@ const almacen=multer.diskStorage({
 //configuracion de almacenamiento para que se suba en el post
     const subir = multer({storage: almacen});
   //validaciones
-const { validar } = require("./validaciones/validaciones.js");
+const { validar } = require("./src/middleware/validaciones/validaciones.js");
 
 //app.get('/', (req, res) => {
     //res.send('API Rest Full con expres');});
@@ -46,6 +48,11 @@ app.get('/api/aprendices/', (req, res) => {
         const listaAprendices = JSON.parse(datos);
         res.status(200).json({ listado: listaAprendices});});
 
+});
+
+// --- RUTA PROTEGIDA (CORREGIDA)---
+app.get("/api/protegida",autenticacionMiddleware, (req,res,next)=>{
+    res.json({mesaje: "Ruta protegida, acceso con token"});
 });
 
 app.post('/api/aprendices/', subir.single("imagen"),validar, (req, res) => {
@@ -65,19 +72,41 @@ app.post('/api/aprendices/', subir.single("imagen"),validar, (req, res) => {
     
 });
 
-app.put('/api/aprendices/:id', (req, res) => {
+app.put('/api/aprendices/:id', (req, res,next) => {
     res.status(200).json({ mensaje: 'actualizar aprendiz' });
 });
 
-app.delete('/api/aprendices/:id', (req, res) => {
+app.delete('/api/aprendices/:id', (req, res,next) => {
     res.status(200).json({ mensaje: 'eliminar aprendiz' });
 });
 
-//probocando un error para probar el middleware de manejo de errores
-app.get('/api/error', (req, res, next) => {
-    next(new Error("Error de prueba"));
+app.post("/api/inicioSecion", (req,res,next)=>{
+    const{usuario,clave}=req.body
+    //simular datos de usuario en la DB
+    const bdUsuario ={"usuario": "sebas", "clave": "Sena1234"}
+    //limpiar datos del usuario en la DB
+    if (usuario !==bdUsuario.usuario || clave !==bdUsuario.clave){
+        res.json({mensaje: "usuario y/o clave esta incorectas"});
+
+    }
+   
+    //generar token
+    const token=JsonWebTokenError.sign(
+        {user: req.usuario},
+        process.env.JWT_SECRET,{
+            expiresIn: "1h",
+        });
+        res.json({token});
 })
+
+//probocando un error para probar el middleware de manejo de errores
+//app.get('/api/error', (req, res, next) => {
+//next(new Error("Error de prueba"));
+//})
 app.use(manejadorErroresMiddleware);
+//========================================
+//SERVIDOR
+//========================================
 app.listen(PUERTO, () => {
     console.log(`Servidor ejecutándose en http://localhost:${PUERTO}`);
 });
